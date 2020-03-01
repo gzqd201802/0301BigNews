@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- 引入BS的样式文件，用 link 标签 -->
+    <link rel="stylesheet" href="./libs/bootstrap/css/bootstrap.min.css">
+    <!-- bootstrap.js 依赖到 jquery.js，所以 jq 文件要在前面就引入  -->
+    <script src="./libs/jquery-1.12.4.min.js"></script>
+    <!-- 引入BS的JS文件，用 script 标签 -->
+    <script src="./libs/bootstrap/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+    <h1>不支持同时打开多个模态框</h1>
+    <h2>模态框的 HTML 代码放置的位置</h2>
+
+    <div id="myModal" class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">Modal title</h4>
+                </div>
+                <div class="modal-body">
+                    <p>One fine body&hellip;</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+    <h3>1. 通过 JavaScript 调用</h3>
+    <button id="btn01">点击按钮弹出模态框</button>
+    <h3>2. 通过 data 属性 - 不需写 JavaScript 代码也可激活模态框。</h3>
+    <!-- 
+        data-toggle="modal"             当前标签用于调用BS的模态框
+        data-target="#myModal"          指定模态框的选择器
+    -->
+    <!-- 给 button 标签添加自定义属性调用模态框 -->
+    <button type="button" data-toggle="modal" data-target="#myModal">再调用模态框</button>
+    <!-- 给 a 标签添加自定义属性调用模态框 -->
+    <a href="#" data-toggle="modal" data-target="#myModal">a标签调用模态框</a>
+    <!-- href 中如果写的是 javascript:; 虽然也能弹出，但是浏览器会多2个报错 -->
+    <!-- 解决办法：把 javascript:; 删掉即可，知识 BS 的插件这样用而已 -->
+    <a href="javascript:;" data-toggle="modal" data-target="#myModal">a标签调用模态框</a>
+    <script>
+
+        $(function(){
+
+            $('#btn01').click(function () { 
+                // 1. 通过 JavaScript 调用
+                // $('#myModal').modal();
+
+                // 立刻显示模态框
+                $('#myModal').modal('show');
+
+                // 两秒钟后自动隐藏模态框
+                setTimeout(function(){
+                    $('#myModal').modal('hide');
+                },2000)
+            });
+
+
+            // 给模态框添加一些事件监听(监听模态框的打开和关闭状态)
+            //    模态框变成某个状态自动触发的事件。
+
+            $('#myModal').on('show.bs.modal', function (e) {
+
+                console.log('show 方法调用之后立即触发该事件。');
+
+                $('.modal-footer button').eq(1).text('确定');
+            });
+
+
+            $('#myModal').on('hide.bs.modal', function (e) {
+
+                console.log('hide 方法调用之后立即触发该事件。');
+                
+            });
+
+            
+        })
+
+    </script>
+</body>
+
+</html>

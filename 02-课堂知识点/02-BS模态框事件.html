@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <!-- 引入BS的样式文件，用 link 标签 -->
+    <link rel="stylesheet" href="./libs/bootstrap/css/bootstrap.min.css">
+    <!-- bootstrap.js 依赖到 jquery.js，所以 jq 文件要在前面就引入  -->
+    <script src="./libs/jquery-1.12.4.min.js"></script>
+    <!-- 引入BS的JS文件，用 script 标签 -->
+    <script src="./libs/bootstrap/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+    <h1>不支持同时打开多个模态框</h1>
+    <h2>模态框的 HTML 代码放置的位置</h2>
+
+    <div id="myModal" class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                            aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title">文章分类操作</h4>
+                </div>
+                <div class="modal-body">
+                    <!-- 表单结构放到模态框主体中 modal-body -->
+                    <form class="form-horizontal">
+                        <div class="form-group">
+                            <label for="inputEmail3" class="col-sm-2 control-label">分类名称</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="inputEmail3" placeholder="名称">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="inputPassword3" class="col-sm-2 control-label">分类别名</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="inputPassword3" placeholder="别名">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-primary">分类</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+    <button class="btn btn-success btn-add">新增分类</button>
+    <button class="btn btn-info btn-edit">编辑</button>
+
+    <a href="" data-toggle="modal" data-target="#myModal">a标签调用模态框</a>
+
+
+    <script>
+
+        $(function () {
+
+            // 新增按钮点击
+            $('.btn-add').click(function () {
+                // 通过 JS 的方式调用模态框
+                $('#myModal').modal();
+
+                // 方案1：点击的时候修改模态框的按钮文字
+                // 获取当前点击按钮的文本
+                const str = $(this).text();
+                // 修改模态框按钮文字
+                $('.modal-footer button').eq(1).text(str).attr('class','btn btn-success')
+
+            });
+            
+            $('.btn-edit').click(function () {
+                // 通过 JS 的方式调用模态框
+                $('#myModal').modal();
+
+                // 获取当前点击按钮的文本
+                const str = $(this).text();
+                // 修改模态框按钮文字
+                $('.modal-footer button').eq(1).text(str).attr('class','btn btn-info')
+            });
+
+
+            // 需求：
+            //    1. 点击 <新增分类> 按钮的时候，模态框的文字变成 <新增分类>
+            //    2. 点击 <新增分类> 按钮的时候，模态框的文字变成 <新增分类>
+            // $('#myModal').on('show.bs.modal', function (e) {
+            //     // 补充了解：
+            //     //  如果通过自定义属性 data-toggle="modal" data-target="#myModal" 绑定的事件
+            //     //  可通过 e.relatedTarget 获取点击的元素
+            //     console.log(e.relatedTarget);
+            //     const str = $(e.relatedTarget).text();
+            //     console.log(str);
+            // });
+
+            
+            // 需求：模态框关闭的时候，把表单的内容清空掉
+            $('#myModal').on('hide.bs.modal', function (e) {
+                console.log('模态框关闭的时候，把表单的内容清空掉');
+                // jq 对象没有快速清空表单的方法
+
+                // DOM 的表单可通过 reset() 快速清空所有表单内容
+                // $('form')   查找到表单，但这里还是 JQ 对象
+                // [0]         从 jq 对象中获取到 dom 表单对象
+                // .reset()    清空表单
+                $('form')[0].reset();
+
+            });
+
+
+
+
+
+
+
+
+
+
+
+
+
+        });
+    </script>
+</body>
+
+</html>
